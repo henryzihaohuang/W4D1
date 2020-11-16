@@ -46,7 +46,38 @@ class KnightPathFinder
         build_move_tree
     end
 
-   
+
+    def new_move_positions(pos)
+        new_moves = KnightPathFinder.valid_moves(pos)
+
+        new_moves.reject {|position| @considered_positions.include?(position)}
+
+        new_moves.each {|new_pos| @considered_positions << new_pos}
+
+        new_moves
+    end
+
+    def build_move_tree
+        nodes = [self.root_node]
+
+        while !nodes.empty?
+            current_pos = nodes.first.value
+            new_moves_positions(current_pos)
+        end
+    end
+
+    # def bfs(target)
+        
+    #     nodes = [self]
+
+
+    #     while !nodes.empty?
+    #         return nodes.first if nodes.first.value == target
+    #         nodes += nodes.shift.children
+    #     end
+        
+    #     nil
+    # end
 
     
 #  y

@@ -6,5 +6,6 @@ class PolyTreeNode
         @position = position
         @children_moves = children_moves
     end
+end
 
     

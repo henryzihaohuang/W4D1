@@ -5,13 +5,8 @@ require_relative "00_tree_node.rb"
 
 
 
+
 class KnightPathFinder
-
-
-
-    def self.root_node(starting_pos)
-        PolyTreeNode.new(starting_pos)
-    end
 
     MOVES = [
         [2,  1],
@@ -25,13 +20,14 @@ class KnightPathFinder
     ]
 
 
-    def self.valid_moves(pos)
+    def self.valid_moves(pos)     # 0,0
         all_valid_moves = []
 
-        y, x = pos
+        y, x = pos.value #0,0
 
         MOVES.each do |move|
             new_pos = [y + move[0], x + move[1]] 
+                      # 0 +  2, 0 + 1 == pos = [2,1]
             if new_pos.all? { |coordinate| coordinate.between?(0,7) }
                 all_valid_moves << new_pos
             end     
@@ -46,11 +42,12 @@ class KnightPathFinder
         build_move_tree
     end
 
+    attr_accessor :root_node, :considered_positions
 
     def new_move_positions(pos)
         new_moves = KnightPathFinder.valid_moves(pos)
 
-        new_moves.reject {|position| @considered_positions.include?(position)}
+        new_moves.reject! {|position| @considered_positions.include?(position)}
 
         new_moves.each {|new_pos| @considered_positions << new_pos}
 
@@ -58,24 +55,37 @@ class KnightPathFinder
     end
 
     def build_move_tree
-        self.root_node = PolyTreeNode.new(starting_pos)
+        self.root_node = PolyTreeNode.new(@starting_pos)
 
-        nodes = [self.root_node]
-
+        nodes = [root_node]
         while !nodes.empty?
             current_pos = nodes.shift
             
-            new_moves_positions(current_pos).each do |next_pos|
+            new_move_positions(current_pos).each do |next_pos|
                 
                 new_node = PolyTreeNode.new(next_pos)
 
-                current_pos.children_moves << new_node
+                current_pos.add_child(new_node)
 
                 nodes << new_node
             end
 
         end
 
+    end
+
+    def find_path(end_pos)
+        
+    end
+
+    def trace_path_back(end_pos)
+        node = []
+        curret_node = end_pos
+        while !current_node.nil?
+            node << current_node
+            current_node = current_node.parent
+        end
+        node
     end
 
     # def bfs(target)
@@ -132,3 +142,7 @@ class KnightPathFinder
 
 
 end
+
+# pos1 = KnightPathFinder.new([0,0])
+# # p pos1
+# p KnightPathFinder.valid_moves(pos1)

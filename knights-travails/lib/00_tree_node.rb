@@ -34,18 +34,18 @@ class PolyTreeNode
     end
 
 
-    def dfs(target)
-        return self if self.value == target
+    # def dfs(target)
+    #     return self if self.value == target
     
-        self.children.each do |child|
-            next_level = child.dfs(target) 
-            return next_level unless next_level == nil
-        end
+    #     self.children.each do |child|
+    #         next_level = child.dfs(target) 
+    #         return next_level unless next_level == nil
+    #     end
 
-        nil
+    #     nil
 
 
-    end
+    # end
 
 
     def bfs(target)

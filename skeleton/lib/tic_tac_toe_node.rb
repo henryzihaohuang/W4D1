@@ -4,13 +4,15 @@ require 'byebug'
 class TicTacToeNode
   def initialize(board, next_mover_mark, prev_move_pos = nil)
     
-    @board = Board.new
+    @board = board
     @next_mover_mark = next_mover_mark
     @prev_move_pos = prev_move_pos
   end
 
-  def losing_node?(evaluator)
+  attr_reader :board, :next_mover_mark, :prev_move_pos
 
+  def losing_node?(evaluator)
+    return true if board.over? && 
   end
 
   def winning_node?(evaluator)
@@ -19,27 +21,33 @@ class TicTacToeNode
   # This method generates an array of all moves that can be made after
   # the current move.
   def children
-    debugger
+    # debugger
     dup_board = @board.dup
-    next_mover_mark = []
+    possible_moves = []
     
 
-
-    (0..dup_board.length).each do |row|
-      (0..dup_board[0].length).each do |col|
-
+    # debugger
+    (0...dup_board.rows.length).each do |row|
+      (0...dup_board.rows.length).each do |col|
         position = [row, col]
-
+        # debugger
         if dup_board.empty?(position)
-          
-          position = next_mover_mark
+          # debugger
+          dup_board[position] = next_mover_mark
 
-          prev_move_pos = position
-          possible_moves << position
+          if next_mover_mark == :o
+            next_mover_mark = :x
+          else
+            next_mover_mark = :o
+          end
+
+          possible_moves << TicTacToeNode.new(dup_board,next_mover_mark,position)
 
         end
       end
     end
     possible_moves
   end
+
+
 end
